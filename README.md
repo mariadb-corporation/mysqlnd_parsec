@@ -16,16 +16,21 @@ When your PHP connector supports it, it replaces older SHA-1–based password me
 
 - PHP 8.1 or newer with `mysqlnd`.
 - `libsodium` development libraries.
+- `openssl` development libraries.
 - MariaDB server configured with `parsec` authentication plugin. (version 11.8 or newer)
 
 ## Installation
 
 ### Normal installation
 
-`mysqlnd_parsec` is usually built and installed automatically when installed through your system’s PHP extension packaging system.
+`mysqlnd_parsec` is usually built and installed automatically when installed through PHP's pie installer.
 
-Note: When installed into PHP’s extension directory, `mysqlnd_parsec` is loaded automatically by `mysqlnd`.
-You do not need to add `extension=mysqlnd_parsec to your php.ini.
+On Posix systems the pie installer also adds a configuration entry for the mysqlnd_parsec plugin. On Windows you need to enable the plugin
+in your php.init file:
+
+```
+extension=mysqln_parsec
+```
 
 ### Building from source
 
