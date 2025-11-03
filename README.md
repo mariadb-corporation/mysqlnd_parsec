@@ -29,7 +29,7 @@ On Posix systems the pie installer also adds a configuration entry for the mysql
 in your php.init file:
 
 ```
-extension=mysqln_parsec
+extension=mysqlnd_parsec
 ```
 
 ### Building from source
