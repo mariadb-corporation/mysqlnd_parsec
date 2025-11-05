@@ -239,8 +239,14 @@ PHP_MSHUTDOWN_FUNCTION(mysqlnd_parsec)
 	return SUCCESS;
 }
 
+static const zend_module_dep mysqlnd_parsec_deps[] = {
+	ZEND_MOD_REQUIRED("mysqlnd")
+	ZEND_MOD_END
+};
+
 zend_module_entry mysqlnd_parsec_module_entry = {
-	STANDARD_MODULE_HEADER,
+	STANDARD_MODULE_HEADER_EX, NULL,
+	mysqlnd_parsec_deps,
 	"mysqlnd_parsec",
 	NULL,
 	PHP_MINIT(mysqlnd_parsec),
