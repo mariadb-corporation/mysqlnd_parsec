@@ -2,7 +2,7 @@ name: Windows Extension Build (php-windows-builder)
 
 on:
   push:
-    branches: [main, win-build]
+    branches: [main, 1.0-georg]
   pull_request:
     branches: [main]
   release:
