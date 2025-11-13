@@ -11,9 +11,7 @@
     }
   ],
   "require": {
-    "php": ">=8.2"
-  },
-  "suggest": {
+    "php": ">=8.2",
     "ext-mysqlnd": "*"
   },
   "php-ext": {
