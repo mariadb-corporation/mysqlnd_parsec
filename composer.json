@@ -11,11 +11,10 @@
     }
   ],
   "require": {
-    "php": ">=8.2"
-  },
-  "suggest": {
+    "php": ">=8.2",
     "ext-mysqlnd": "*"
   },
+    "ext-mysqlnd": "*"
   "php-ext": {
       "extension-name": "mysqlnd_parsec",
       "priority": 30,
