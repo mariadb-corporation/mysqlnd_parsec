@@ -28,7 +28,7 @@
 #define NET_HEADER_SIZE  4
 
 
-#define PHP_MARIADB_AUTH_PLUGIN_VERSION "1.0.1"
+#define PHP_MARIADB_AUTH_PLUGIN_VERSION "1.0.2"
 
 extern zend_module_entry mariadb_auth_plugin_module_entry;
 #define phpext_mariadb_auth_plugin_ptr &mariadb_auth_plugin_module_entry
