@@ -148,7 +148,10 @@ static zend_uchar* mariadb_parsec_auth(struct st_mysqlnd_authentication_plugin* 
     }
 
     if (FAIL == pfc->data->m.receive(pfc, conn->vio, buffer, pkt_len, conn->stats, conn->error_info))
-      return NULL;
+    {
+	    php_error_docref(NULL, E_WARNING, "Error reading data");
+		return NULL;
+    }
 
     /*
     the server sends \1\255 or \1\254 instead of just \255 or \254 -
@@ -180,20 +183,26 @@ static zend_uchar* mariadb_parsec_auth(struct st_mysqlnd_authentication_plugin* 
 		return NULL;
     }
 
-	RAND_bytes(signed_msg.response.client_scramble, CHALLENGE_SCRAMBLE_LENGTH);
+	if (RAND_bytes(signed_msg.response.client_scramble, CHALLENGE_SCRAMBLE_LENGTH) != 1)
+    {
+	    php_error_docref(NULL, E_WARNING, "RAND_bytes() failed");
+		return NULL;
+    }
 
 	if (compute_derived_key(passwd, passwd_len, &params, priv_key))
     {
 	    php_error_docref(NULL, E_WARNING, "Unable to create derived key");
+        OPENSSL_cleanse(priv_key, sizeof(priv_key));
 		return NULL;
     }
 
-	if ((ret= calloc(sizeof signed_msg.response, 1)))
+	if ((ret= calloc(1, sizeof signed_msg.response)))
 	{
         if (ed25519_sign(signed_msg.start, CHALLENGE_SCRAMBLE_LENGTH * 2,
                           priv_key, signed_msg.response.signature, params.pub_key))
         {
           free(ret);
+          OPENSSL_cleanse(priv_key, sizeof(priv_key));
           return NULL;
         }
 		memcpy(ret, signed_msg.response.start, sizeof signed_msg.response);
@@ -202,8 +211,15 @@ static zend_uchar* mariadb_parsec_auth(struct st_mysqlnd_authentication_plugin* 
         /* Increment the packet number, to avoid packet order errors */
         (*packet_no)++;
 
+        OPENSSL_cleanse(priv_key, sizeof(priv_key));
+        OPENSSL_cleanse(buffer, sizeof(buffer));
+        OPENSSL_cleanse(&params, sizeof(params));
+
         return ret;
-	}
+	} else
+	    php_error_docref(NULL, E_WARNING, "Failed to allocate memory");
+
+    OPENSSL_cleanse(priv_key, sizeof(priv_key));
 	return NULL;
 }
 
