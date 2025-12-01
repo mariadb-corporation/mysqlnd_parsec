@@ -39,7 +39,7 @@ jobs:
           "version=$($version[1])" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding UTF8 -Append
 
       - name: Build Extension (PHP ${{ matrix.php-version }} - ${{ matrix.ts }} - ${{ matrix.arch }})
-        uses: php/php-windows-builder/extension@1.3.0
+        uses: php/php-windows-builder/extension@v1
         with:
           php-version: ${{ matrix.php-version }}
           arch: ${{ matrix.arch }}
